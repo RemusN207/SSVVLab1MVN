@@ -8,6 +8,7 @@ import repository.*;
 import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.TemaValidator;
+import validation.ValidationException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,15 +41,57 @@ class ServiceTest {
     }
 
     @Test
-    void addStudent_Success() {
-        assertNull(service.addStudent(new Student("1", "AB", 100, "AB@email.com")));
+    void addStudent_tc01() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student(null, "A", 0, "e") ));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addStudent_tc02() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student("", "A", 0, "e")));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addStudent_tc03() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student("1", null, 0, "e")));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addStudent_tc04() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student("1", "", 0, "e")));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addStudent_tc05() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student("1", "A", -1, "e")));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addStudent_tc06() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student("1", "A", 0, null)));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+    @Test
+    void addStudent_tc07() {
+        assertThrows(ValidationException.class, () -> service.addStudent(new Student("1", "A", 0, "")));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addStudent_tc08() {
+        assertNull(service.addStudent(new Student("1", "A", 0, "e")));
         assertEquals(1, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
     }
 
     @Test
-    void addStudent_Failure() {
-        Student stud = new Student("1", "AB", 100, "AB@email.com");
+    void addStudent_tc09() {
+        Student stud = new Student("1", "A", 0, "e");
         service.addStudent(stud);
-        assertEquals(stud.getID(), service.addStudent(new Student("1", "AB", 100, "AB@email.com")).getID());
+        assertEquals(stud.getID(), service.addStudent(new Student("1", "A", 0, "e")).getID());
+        assertEquals(1, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
     }
 }
