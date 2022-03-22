@@ -1,6 +1,7 @@
 package service;
 
 import domain.Student;
+import domain.Tema;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +37,11 @@ class ServiceTest {
 
     @AfterEach
     void tearDown() {
-        List<Student> list = StreamSupport.stream(service.getAllStudenti().spliterator(), false).collect(Collectors.toList());
-        list.forEach(s -> service.deleteStudent(s.getID()));
+        List<Student> studentList = StreamSupport.stream(service.getAllStudenti().spliterator(), false).collect(Collectors.toList());
+        studentList.forEach(student -> service.deleteStudent(student.getID()));
+        List<Tema> assignmentList = StreamSupport.stream(service.getAllTeme().spliterator(), false).collect(Collectors.toList());
+        assignmentList.forEach(tema -> service.deleteTema(tema.getID()));
+
     }
 
     @Test
@@ -93,5 +97,20 @@ class ServiceTest {
         service.addStudent(stud);
         assertEquals(stud.getID(), service.addStudent(new Student("1", "A", 0, "e")).getID());
         assertEquals(1, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addAssignment_tc01() {
+        assertNull(service.addTema(new Tema("1", "A", 1, 1)));
+        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+    }
+
+    @Test
+    void addAssignment_tc02() {
+        Tema tema = new Tema("1", "A", 1, 1);
+        service.addTema(tema);
+        assertEquals(tema.getID(), service.addTema(new Tema("1", "A", 1,1)).getID());
+        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+
     }
 }
