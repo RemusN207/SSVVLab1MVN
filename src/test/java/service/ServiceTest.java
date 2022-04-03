@@ -101,16 +101,39 @@ class ServiceTest {
 
     @Test
     void addAssignment_tc01() {
-        assertNull(service.addTema(new Tema("1", "A", 1, 1)));
-        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+        assertThrows(ValidationException.class, () -> service.addTema(new Tema("", "d", 1, 1) ));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
     }
 
     @Test
     void addAssignment_tc02() {
-        Tema tema = new Tema("1", "A", 1, 1);
-        service.addTema(tema);
-        assertEquals(tema.getID(), service.addTema(new Tema("1", "A", 1,1)).getID());
-        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+        assertThrows(ValidationException.class, () -> service.addTema(new Tema("i", "", 1, 1) ));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+    }
 
+    @Test
+    void addAssignment_tc03() {
+        assertThrows(ValidationException.class, () -> service.addTema(new Tema("i", "d", 0, 1) ));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+    }
+
+    @Test
+    void addAssignment_tc04() {
+        assertThrows(ValidationException.class, () -> service.addTema(new Tema("i", "d", 1, 0) ));
+        assertEquals(0, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+    }
+
+    @Test
+    void addAssignment_tc05() {
+        assertNull(service.addTema(new Tema("i", "d", 1, 1)));
+        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+    }
+
+    @Test
+    void addAssignment_tc06() {
+        Tema tema = new Tema("i", "d", 1, 1);
+        service.addTema(tema);
+        assertEquals(tema.getID(), service.addTema(new Tema("i", "d", 1, 1)).getID());
+        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
     }
 }
