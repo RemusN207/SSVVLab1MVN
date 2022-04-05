@@ -62,7 +62,7 @@ public class ServiceIntegrationTest {
     }
 
     @Test
-    void addGrade() {
+    void addGrade_unit() {
         service.addStudent(new Student("1", "A", 0, "e"));
         service.addTema(new Tema("i", "d", 1, 1));
         assertEquals(5, service.addNota(new Nota("1", "1", "i", 5, LocalDate.of(2021, 10, 2)), "good"));
