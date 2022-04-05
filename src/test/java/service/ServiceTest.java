@@ -41,7 +41,6 @@ class ServiceTest {
         studentList.forEach(student -> service.deleteStudent(student.getID()));
         List<Tema> assignmentList = StreamSupport.stream(service.getAllTeme().spliterator(), false).collect(Collectors.toList());
         assignmentList.forEach(tema -> service.deleteTema(tema.getID()));
-
     }
 
     @Test
