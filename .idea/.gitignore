@@ -6,4 +6,8 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+<<<<<<< Updated upstream
+=======
+runConfigurations.xml
+>>>>>>> Stashed changes
 vcs.xml
