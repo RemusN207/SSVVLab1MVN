@@ -78,4 +78,24 @@ public class ServiceIntegrationTest {
         assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
         assertEquals(1, (int) StreamSupport.stream(service.getAllNote().spliterator(), false).count());
     }
+
+    @Test
+    void addGrade_increment01() {
+        assertNull(service.addStudent(new Student("1", "A", 0, "e")));
+        assertEquals(1, (int) StreamSupport.stream(service.getAllStudenti().spliterator(), false).count());
+    }
+
+    @Test
+    void addGrade_increment02() {
+        addGrade_increment01();
+        assertNull(service.addTema(new Tema("i", "d", 1, 1)));
+        assertEquals(1, (int) StreamSupport.stream(service.getAllTeme().spliterator(), false).count());
+    }
+
+    @Test
+    void addGrade_increment03() {
+        addGrade_increment02();
+        assertEquals(5, service.addNota(new Nota("1", "1", "i", 5, LocalDate.of(2021, 10, 2)), "good"));
+        assertEquals(1, (int) StreamSupport.stream(service.getAllNote().spliterator(), false).count());
+    }
 }
